@@ -1,7 +1,6 @@
 namespace PersonalBlog.DataAccess.Entities.Abstract;
 
-public interface IEntity<TKey> where TKey : IEquatable<TKey>
+public interface IEntity
 {
-    TKey Id { get; init; }
+    Guid Id { get; init; }
 }
-public interface IEntity : IEntity<Guid> { }
