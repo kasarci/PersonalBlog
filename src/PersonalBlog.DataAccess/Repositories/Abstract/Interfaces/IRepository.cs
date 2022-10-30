@@ -6,14 +6,14 @@ namespace PersonalBlog.DataAccess.Repositories.Abstract.Interfaces;
 /// Mongo Repository interface
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public interface IRepository<T, TKey> where T : IEntity<TKey>, new() where TKey : IEquatable<TKey>,
-IRepositoryCommon<T,TKey>,
-IRepositoryDelete<T,TKey>,
-IRepositoryFind<T,TKey>,
-IRepositoryFindAll<T,TKey>,
-IRepositoryFirst<T,TKey>,
-IRepositoryGet<T,TKey>,
-IRepositoryAdd<T,TKey>,
-IRepositoryUpdate<T,TKey>,
-IRepositoryUtils<T,TKey>
+public interface IRepository<T> where T: IEntity,
+IRepositoryDelete<T>,
+IRepositoryFind<T>,
+IRepositoryFindAll<T>,
+IRepositoryFirst<T>,
+IRepositoryGet<T>,
+IRepositoryAdd<T>,
+IRepositoryUpdate<T>,
+IRepositoryUtils<T>,
+new()
 { }

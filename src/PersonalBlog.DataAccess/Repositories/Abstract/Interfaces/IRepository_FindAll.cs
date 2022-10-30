@@ -7,7 +7,7 @@ namespace PersonalBlog.DataAccess.Repositories.Abstract.Interfaces;
 /// Mongo Repository interface for FindAll
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public interface IRepositoryFindAll<T, TKey> where T : IEntity<TKey>, new() where TKey : IEquatable<TKey>, IRepositoryCommon<T,TKey>
+public interface IRepositoryFindAll<T> where T : IEntity, new()
 {
     /// <summary>
     /// Fetch all entities.

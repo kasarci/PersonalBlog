@@ -8,7 +8,7 @@ namespace PersonalBlog.DataAccess.Repositories.Abstract.Interfaces;
 /// Mongo Repository interface for Add
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public interface IRepositoryUpdate<T, TKey> where T : IEntity<TKey>, new() where TKey : IEquatable<TKey>, IRepositoryCommon<T,TKey>
+public interface IRepositoryUpdate<T> where T : IEntity, new()
 {
     /// <summary>
     /// Replace an existing entity.
@@ -17,17 +17,11 @@ public interface IRepositoryUpdate<T, TKey> where T : IEntity<TKey>, new() where
     Task<bool> UpdateOneAsync(T entity);
 
     /// <summary>
-    /// Replace existing entities.
-    /// </summary>
-    /// <param name="entities">collection of <typeparamref name="T"/></param>
-    Task<bool> UpdateManyAsync(IEnumerable<T> entities);
-
-    /// <summary>
     /// Updates the desired fields of the entity with Id value.
     /// </summary>
     /// <param name="id"><typeparamref name="T"/> Id</param>
     /// <param name="updateDefinitions">updated field(s)</param>
-    Task<bool> UpdateOneAsync(TKey id, params UpdateDefinition<T>[] updateDefinitions);
+    Task<bool> UpdateOneAsync(Guid id, params UpdateDefinition<T>[] updateDefinitions);
 
     /// <summary>
     /// Updates the desired fields of the entity with entity value.
@@ -42,7 +36,7 @@ public interface IRepositoryUpdate<T, TKey> where T : IEntity<TKey>, new() where
     /// <param name="filter">Expression for filter</param>
     /// <param name="updateDefinition">MongoDb.Driver's UpdateDefinition</param>
     /// <param name="options">MongoDb.Driver's FindOneAndUpdateOptions</param>
-    Task<bool> FindOneAndUpdateAsync(Expression<Func<T>> filter, UpdateDefinition<T> updateDefinition, FindOneAndUpdateOptions<T>? options);
+    Task<T> FindOneAndUpdateAsync(Expression<Func<T,bool>> filter, UpdateDefinition<T> updateDefinition, FindOneAndUpdateOptions<T>? options);
 
     /// <summary>
     /// Find and update an entity.
@@ -50,7 +44,7 @@ public interface IRepositoryUpdate<T, TKey> where T : IEntity<TKey>, new() where
     /// <param name="filter">MongoDb.Driver's FilterDefinition</param>
     /// <param name="updateDefinition">MongoDb.Driver's UpdateDefinition</param>
     /// <param name="options">MongoDb.Driver's FindOneAndUpdateOptions</param>
-    Task<bool> FindOneAndUpdateAsync(FilterDefinition<T> filter, UpdateDefinition<T> updateDefinition, FindOneAndUpdateOptions<T>? options);
+    Task<T> FindOneAndUpdateAsync(FilterDefinition<T> filter, UpdateDefinition<T> updateDefinition, FindOneAndUpdateOptions<T>? options);
 
     /// <summary>
     /// update found entities by filter with updated fields

@@ -8,7 +8,7 @@ namespace PersonalBlog.DataAccess.Repositories.Abstract.Interfaces;
 /// Mongo Repository interface for Find
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public interface IRepositoryFind<T, TKey> where T : IEntity<TKey>, new() where TKey : IEquatable<TKey>, IRepositoryCommon<T,TKey>
+public interface IRepositoryFind<T> where T : IEntity, new()
 {
     /// <summary>
     /// Find documents with filter.

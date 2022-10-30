@@ -8,7 +8,7 @@ namespace PersonalBlog.DataAccess.Repositories.Abstract.Interfaces;
 /// Mongo Repository interface for First
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public interface IRepositoryFirst<T, TKey> where T : IEntity<TKey>, new() where TKey : IEquatable<TKey>, IRepositoryCommon<T,TKey>
+public interface IRepositoryFirst<T> where T : IEntity, new()
 {
     /// <summary>
     /// Returns the firs entity in collection.

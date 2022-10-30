@@ -3,7 +3,7 @@ using PersonalBlog.DataAccess.Entities.Abstract;
 
 namespace PersonalBlog.DataAccess.Repositories.Abstract.Interfaces;
 
-public interface IRepositoryUtils<T, TKey> where T : IEntity<TKey>, new() where TKey : IEquatable<TKey>, IRepositoryCommon<T,TKey>
+public interface IRepositoryUtils<T> where T : IEntity, new()
 {
     /// <summary>
     /// get number of filtered entities.

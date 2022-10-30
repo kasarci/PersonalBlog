@@ -6,7 +6,7 @@ namespace PersonalBlog.DataAccess.Repositories.Abstract.Interfaces;
 /// Mongo Repository interface for Add
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public interface IRepositoryAdd<T, TKey> where T : IEntity<TKey>, new() where TKey : IEquatable<TKey>, IRepositoryCommon<T,TKey>
+public interface IRepositoryAdd<T> where T : IEntity, new()
 {
     /// <summary>
     /// Add entity.

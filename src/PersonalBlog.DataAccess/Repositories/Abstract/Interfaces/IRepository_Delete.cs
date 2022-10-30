@@ -7,13 +7,13 @@ namespace PersonalBlog.DataAccess.Repositories.Abstract.Interfaces;
 /// Mongo Repository interface for Delete
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public interface IRepositoryDelete<T, TKey> where T : IEntity<TKey>, new() where TKey : IEquatable<TKey>, IRepositoryCommon<T,TKey>
+public interface IRepositoryDelete<T> where T : IEntity, new()
 {
     /// <summary>
     /// Delete by Id.
     /// </summary>
     /// <param name="id"></param>
-    Task<bool> DeleteAsync(TKey id);
+    Task<bool> DeleteAsync(Guid id);
 
     /// <summary>
     /// Delete by entity.
@@ -31,5 +31,4 @@ public interface IRepositoryDelete<T, TKey> where T : IEntity<TKey>, new() where
     /// Delete all entities.
     /// </summary>
     Task<bool> DeleteAllAsync();
-    
 }
