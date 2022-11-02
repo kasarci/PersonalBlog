@@ -6,6 +6,6 @@ public interface IEntity
 {
     [BsonId]
     Guid Id { get; init; }
-    DateTime CreatedAt { get; init; }
-    DateTime? ModifiedAt { get; set; }
+    DateTimeOffset CreatedAt { get; init; }
+    DateTimeOffset? ModifiedAt { get; set; }
 }

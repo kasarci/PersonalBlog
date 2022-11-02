@@ -1,6 +1,6 @@
 namespace PersonalBlog.Business.Models.Category.Find;
 
-public class FindCategoryByIdRequestModel
+public class GetCategoryByIdRequestModel
 {
     public Guid Id { get; set; }
 }

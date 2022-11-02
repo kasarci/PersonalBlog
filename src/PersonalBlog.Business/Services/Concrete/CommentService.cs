@@ -26,4 +26,9 @@ public class CommentService : ICommentService
     {
         throw new NotImplementedException();
     }
+
+    Task<DeleteCommentResponseModel> ICommentService.DeleteAsync(DeleteCommentRequestModel deleteCommentRequestModel)
+    {
+        throw new NotImplementedException();
+    }
 }

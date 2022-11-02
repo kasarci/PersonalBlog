@@ -1,6 +1,6 @@
 namespace PersonalBlog.Business.Models.Category.Find;
 
-public class FindCategoryByNameRequestModel
+public class GetCategoryByNameRequestModel
 {
     public string Name { get; set; }
 }
