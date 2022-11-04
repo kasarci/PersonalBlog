@@ -4,7 +4,7 @@ using PersonalBlog.Business.Models.Tag;
 
 namespace PersonalBlog.Business.Models.Post.Find;
 
-public class FindPostByIdResponseModel
+public class FindPostResponseModel
 {
     public Guid PostId { get; set; }
     public Guid WriterId { get; set; }

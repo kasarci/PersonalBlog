@@ -1,6 +1,6 @@
 namespace PersonalBlog.Business.Models.Post.Find;
 
-public class FindPostByIdRequestModel
+public class GetPostByIdRequestModel
 {
     public Guid Id { get; set; }
 }

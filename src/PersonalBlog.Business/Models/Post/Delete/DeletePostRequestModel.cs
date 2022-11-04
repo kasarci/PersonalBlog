@@ -8,5 +8,5 @@ public class DeletePostRequestModel
     /// Set DeleteCompletely to true if you want to delete the post from the database as well.
     /// </summary>
     /// <value></value>
-    public bool? DeleteCompletely { get; set; } = false;
+    public bool DeleteCompletely { get; set; } = false;
 }
