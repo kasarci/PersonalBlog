@@ -63,10 +63,10 @@ public class PostService : IPostService
         return _mapper.Map<FindPostResponseModel>(post);
     }
 
-    public async Task UpdateAsync(UpdatePostRequestModel updatePostRequestModel)
+    public async Task<UpdatePostResponseModel> UpdateAsync(UpdatePostRequestModel updatePostRequestModel)
     {
         var post = await _repository.GetAsync(updatePostRequestModel.Id);
-        if (post is null) return;
+        if (post is null) return new UpdatePostResponseModel() { Succeed = false };
        
         List<Category> categories = new ();
         List<Tag> tags = new ();
@@ -80,6 +80,6 @@ public class PostService : IPostService
             Tags = tags
         };
 
-        await _repository.UpdateOneAsync(updatedPost);
+        return new UpdatePostResponseModel() { Succeed = await _repository.UpdateOneAsync(updatedPost) };
     }
 }

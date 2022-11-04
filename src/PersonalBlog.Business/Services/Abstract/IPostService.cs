@@ -13,5 +13,5 @@ public interface IPostService
     Task<FindPostResponseModel> GetAsync(GetPostByIdRequestModel getPostByIdRequestModel);
     Task<AddPostResponseModel> AddAsync(AddPostRequestModel addPostRequestModel);
     Task<DeletePostResponseModel> DeleteAsync(DeletePostRequestModel deletePostRequestModel);
-    Task UpdateAsync(UpdatePostRequestModel updatePostRequestModel);
+    Task<UpdatePostResponseModel> UpdateAsync(UpdatePostRequestModel updatePostRequestModel);
 }
