@@ -1,17 +1,17 @@
 using AutoMapper;
-using PersonalBlog.Business.Models.Category;
-using PersonalBlog.Business.Models.Category.Add;
+using PersonalBlog.Business.Models.Tag;
+using PersonalBlog.Business.Models.Tag.Add;
 using PersonalBlog.DataAccess.Entities.Concrete;
 
 namespace PersonalBlog.Business.Mapping;
 
-public class CategoryProfile : Profile
+public class TagProfile : Profile
 {
-    public CategoryProfile()
+    public TagProfile()
     {
-        CreateMap<Category, CategoryModel>();
-        CreateMap<Category, AddCategoryResponseModel>();
-        CreateMap<AddCategoryRequestModel, Category>()
+        CreateMap<Tag, TagModel>();
+        CreateMap<Tag, AddTagResponseModel>();
+        CreateMap<AddTagRequestModel, Tag>()
             .ForMember(c => c.Id, opt => 
                 opt.MapFrom(i => Guid.NewGuid()))
             .ForMember(c => c.CreatedAt, opt => 

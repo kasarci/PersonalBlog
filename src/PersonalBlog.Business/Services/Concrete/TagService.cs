@@ -1,4 +1,6 @@
+using System.Linq.Expressions;
 using AutoMapper;
+using MongoDB.Driver;
 using PersonalBlog.Business.Models.Tag;
 using PersonalBlog.Business.Models.Tag.Add;
 using PersonalBlog.Business.Models.Tag.Delete;
@@ -20,28 +22,51 @@ public class TagService : ITagService
         _mapper = mapper;
     }
 
-    public Task<AddTagResponseModel> AddAsync(AddTagRequestModel addTagRequestModel)
+    public async Task<IEnumerable<TagModel>> FindAsync(Expression<Func<DataAccess.Entities.Concrete.Tag, bool>> filter)
     {
-        throw new NotImplementedException();
+        var result = await _repository.FindAsync(filter);
+        return _mapper.Map<IEnumerable<TagModel>>(result);
     }
 
-    public Task DeleteAsync(DeleteTagRequestModel deleteTagRequestModel)
+    public async Task<TagModel> FindAsync(FindTagByIdRequestModel findTagByIdRequestModel)
     {
-        throw new NotImplementedException();
+        var result = await _repository.GetAsync(findTagByIdRequestModel.Id);
+        return _mapper.Map<TagModel>(result);
     }
 
-    public Task<TagModel> FindAsync(FindTagByIdRequestModel findTagByIdRequestModel)
+    public async Task<TagModel> FindAsync(FindTagByNameRequestModel findTagByNameRequest)
     {
-        throw new NotImplementedException();
+        var result = (await _repository.FindAsync(t => t.Name == findTagByNameRequest.Name)).FirstOrDefault();
+        return _mapper.Map<TagModel>(result);
     }
 
-    public Task<TagModel> FindAsync(FindTagByNameRequestModel findTagByNameRequest)
+    public async Task<AddTagResponseModel> AddAsync(AddTagRequestModel addTagRequestModel)
     {
-        throw new NotImplementedException();
+        var tag = _mapper.Map<Tag>(addTagRequestModel);
+        await _repository.AddOneAsync(tag);
+        return _mapper.Map<AddTagResponseModel>(tag);
     }
 
-    public Task UpdateAsync(UpdateTagRequestModel updateTagRequestModel)
+    public async Task<DeleteTagResponseModel> DeleteAsync(DeleteTagRequestModel deleteTagRequestModel)
     {
-        throw new NotImplementedException();
+        var result = await _repository.DeleteAsync(deleteTagRequestModel.Id);
+        return _mapper.Map<DeleteTagResponseModel>(result);
+    }
+
+
+    public async Task<UpdateTagResponseModel> UpdateAsync(UpdateTagRequestModel updateTagRequestModel)
+    {
+        var tag = await _repository.GetAsync(updateTagRequestModel.Id);
+        if (tag is null)
+        {
+            return new UpdateTagResponseModel() { Succeed = false };
+        }
+        
+        var updatedTag = tag with {Name = updateTagRequestModel.Name };
+        
+        return new UpdateTagResponseModel()
+        {
+            Succeed = await _repository.UpdateOneAsync(updatedTag)
+        };
     }
 }

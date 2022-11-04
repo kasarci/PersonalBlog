@@ -60,6 +60,13 @@ public class CategoryService : ICategoryService
     {
 
         var category = await _repository.GetAsync(updateCategoryRequestModel.Id);
+        if (category is null)
+        {
+            return new UpdateCategoryResponseModel()
+            {
+                Succeed = false 
+            };
+        }
         var updatedCategory = category with { Name = updateCategoryRequestModel.Name };
         
         return new UpdateCategoryResponseModel()
