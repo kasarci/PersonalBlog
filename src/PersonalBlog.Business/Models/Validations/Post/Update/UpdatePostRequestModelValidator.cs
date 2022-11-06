@@ -1,7 +1,7 @@
 using FluentValidation;
 using PersonalBlog.Business.Models.Post.Update;
 
-namespace PersonalBlog.Business.Models.Validations.Post.Update;'
+namespace PersonalBlog.Business.Models.Validations.Post.Update;
 
 public class UpdatePostRequestModelValidator : AbstractValidator<UpdatePostRequestModel>
 {
