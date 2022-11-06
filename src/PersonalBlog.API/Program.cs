@@ -1,11 +1,29 @@
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
+using PersonalBlog.API.Extensions;
+using PersonalBlog.API.Settings;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+//Serialize the GUID as string in the database.
+BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
+//Serialize the DateTimeOffset as string in the database.
+BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(BsonType.String));
 
+var mongoDbSettings = builder.Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
+
+// Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddFluentValidation();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDependencyInjections();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
