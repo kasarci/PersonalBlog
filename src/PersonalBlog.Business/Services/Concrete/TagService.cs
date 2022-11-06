@@ -8,6 +8,7 @@ using PersonalBlog.Business.Models.Tag.Find;
 using PersonalBlog.Business.Models.Tag.Update;
 using PersonalBlog.Business.Services.Abstract;
 using PersonalBlog.DataAccess.Repositories.Abstract.Interfaces;
+using Tag = PersonalBlog.DataAccess.Entities.Concrete.Tag;
 
 namespace PersonalBlog.Business.Services.Concrete;
 
