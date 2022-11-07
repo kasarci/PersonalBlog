@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using PersonalBlog.DataAccess.Entities.Concrete;
 using PersonalBlog.DataAccess.Repositories.Abstract;
@@ -8,5 +9,5 @@ namespace PersonalBlog.DataAccess.Repositories.Concrete;
 
 public class PostRepository : RepositoryBase<Post>, IPostRepository
 {
-    public PostRepository(IMongoClient mongoClient, string databaseName, AsyncRetryPolicy asyncRetryPolicy) : base(mongoClient, databaseName, asyncRetryPolicy) { }
+    public PostRepository(IMongoClient mongoClient, IConfiguration configuration) : base(mongoClient, configuration) { }
 }

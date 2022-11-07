@@ -1,5 +1,6 @@
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
+using Microsoft.Extensions.Configuration;
 using MongoDB.Bson.IO;
 using MongoDB.Driver;
 using PersonalBlog.DataAccess.Entities.Abstract;
@@ -19,12 +20,11 @@ where T : IEntity, new()
     protected readonly UpdateDefinitionBuilder<T> _updateBuilder = Builders<T>.Update;
     protected readonly SortDefinitionBuilder<T> _sortDefinition = Builders<T>.Sort;
 
-    protected RepositoryBaseCommon(IMongoClient mongoClient, string databaseName, AsyncRetryPolicy asyncRetryPolicy)
+    protected RepositoryBaseCommon(IMongoClient mongoClient, IConfiguration configuration)
     {
-        _databaseName = databaseName;
+        _databaseName = configuration.GetSection("MongoDbSettings:DatabaseName").Value;
         IMongoDatabase database = mongoClient.GetDatabase(_databaseName);
         _collection = database.GetCollection<T>(CollectionName);
-        _asyncRetryPolicy = asyncRetryPolicy;
     }
 
     /// <summary>

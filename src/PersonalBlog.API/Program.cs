@@ -12,8 +12,6 @@ BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
 //Serialize the DateTimeOffset as string in the database.
 BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(BsonType.String));
 
-var mongoDbSettings = builder.Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
-
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddFluentValidation();
@@ -21,7 +19,7 @@ builder.Services.AddFluentValidation();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDependencyInjections();
+builder.Services.AddDependencyInjections(builder.Configuration);
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

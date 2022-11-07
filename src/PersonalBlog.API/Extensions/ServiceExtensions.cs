@@ -1,5 +1,6 @@
 using FluentValidation;
 using MongoDB.Driver;
+using PersonalBlog.API.Settings;
 using PersonalBlog.Business.Models.Validations;
 using PersonalBlog.Business.Services.Abstract;
 using PersonalBlog.Business.Services.Concrete;
@@ -10,8 +11,11 @@ namespace PersonalBlog.API.Extensions;
 
 public static class ServiceExtensions
 {
-    public static void AddDependencyInjections(this IServiceCollection services)
+    public static void AddDependencyInjections(this IServiceCollection services, IConfiguration configuration)
     {
+        var mongoDbSettings = configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
+        services.AddSingleton<IMongoClient>(serviceProvider => new MongoClient(mongoDbSettings.ConnectionString));
+
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<ICommentRepository, CommentRepository>();
         services.AddScoped<IPostRepository, PostRepository>();
