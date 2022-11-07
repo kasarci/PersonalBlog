@@ -1,10 +1,11 @@
 using AutoMapper;
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using PersonalBlog.Business.Models.Category;
+using PersonalBlog.Business.Models.Category.Add;
+using PersonalBlog.Business.Models.Category.Delete;
 using PersonalBlog.Business.Models.Category.Find;
+using PersonalBlog.Business.Models.Category.Update;
 using PersonalBlog.Business.Services.Abstract;
-using PersonalBlog.DataAccess.Entities.Concrete;
 
 namespace PersonalBlog.API.Controllers;
 
@@ -13,23 +14,23 @@ namespace PersonalBlog.API.Controllers;
 public class CategoryController : ControllerBase
 {
     private readonly ICategoryService _categoryService;
-    private readonly IMapper _mapper;
 
-    public CategoryController(ICategoryService categoryService, IMapper mapper)
+    public CategoryController(ICategoryService categoryService)
     {
         _categoryService = categoryService;
-        _mapper = mapper;
     }
 
     [HttpGet]
+    [Route("getAll")]
     public async Task<ActionResult<IEnumerable<CategoryModel>>> GetCategoriesAsync()
     {
         var categories = await _categoryService.FindAsync(c => c.IsActive);
         return Ok(categories);
     }
 
-    [HttpGet("{request}")]
-    public async Task<ActionResult<CategoryModel>> GetCategoryById(GetCategoryByIdRequestModel request)
+    [HttpGet]
+    [Route("getById")]
+    public async Task<ActionResult<CategoryModel>> GetCategoryById([FromBody] GetCategoryByIdRequestModel request)
     {
         if(!ModelState.IsValid)
         {
@@ -42,5 +43,65 @@ public class CategoryController : ControllerBase
             return NotFound();
         }
         return Ok(category);
+    }
+
+    [HttpGet]
+    [Route("getByName")]
+    public async Task<ActionResult<CategoryModel>> GetCategoryByName([FromBody] GetCategoryByNameRequestModel request)
+    {
+        if(!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var category = await _categoryService.FindAsync(c => c.IsActive && c.Name == request.Name);
+
+        if(category is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(category);
+    }
+
+    [HttpPost]
+    [Route("add")]
+    public async Task<ActionResult<AddCategoryResponseModel>> AddCategoryAsync([FromBody] AddCategoryRequestModel request)
+    {
+        if(!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        var result = await _categoryService.AddAsync(request);
+
+        return CreatedAtAction(nameof(GetCategoryById), new { id = result.Id }, result);
+    }
+
+    [HttpPut]
+    [Route("update")]
+    public async Task<ActionResult<UpdateCategoryResponseModel>> UpdateCategoryAsync([FromBody]UpdateCategoryRequestModel request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var result = await _categoryService.UpdateAsync(request);
+
+        return result.Succeed ? Ok(result) : NotFound(result);
+    }
+
+    [HttpDelete]
+    [Route("delete")]
+    public async Task<ActionResult<DeleteCategoryResponseModel>> DeleteCategoryAsync([FromBody]DeleteCategoryRequestModel request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var result = await _categoryService.DeleteAsync(request);
+
+        return result.Succeed ? Ok(result) : NotFound(result);
     }
 }
