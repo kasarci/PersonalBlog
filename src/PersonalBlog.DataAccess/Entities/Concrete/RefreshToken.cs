@@ -4,7 +4,7 @@ namespace PersonalBlog.DataAccess.Entities.Concrete;
 
 public record RefreshToken : IToken
 {
-    public Guid Id { get; init; }
+    public Guid Id { get; set; }
     public Guid UserId { get; init; }
     public string UserName { get; init; }
     public string Token { get; init; }
