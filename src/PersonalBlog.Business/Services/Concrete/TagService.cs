@@ -50,8 +50,10 @@ public class TagService : ITagService
 
     public async Task<DeleteTagResponseModel> DeleteAsync(DeleteTagRequestModel deleteTagRequestModel)
     {
-        var result = await _repository.DeleteAsync(deleteTagRequestModel.Id);
-        return _mapper.Map<DeleteTagResponseModel>(result);
+        return new DeleteTagResponseModel()
+        {
+            Succeed = await _repository.DeleteAsync(deleteTagRequestModel.Id)
+        };
     }
 
 

@@ -1,6 +1,7 @@
 using AutoMapper;
 using PersonalBlog.Business.Models.Category;
 using PersonalBlog.Business.Models.Category.Add;
+using PersonalBlog.Business.Models.Category.Delete;
 using PersonalBlog.DataAccess.Entities.Concrete;
 
 namespace PersonalBlog.Business.Mapping;
@@ -11,6 +12,7 @@ public class CategoryProfile : Profile
     {
         CreateMap<Category, CategoryModel>();
         CreateMap<Category, AddCategoryResponseModel>();
+        CreateMap<DeleteCategoryRequestModel, Category>();
         CreateMap<AddCategoryRequestModel, Category>()
             .ForMember(c => c.Id, opt => 
                 opt.MapFrom(i => Guid.NewGuid()))

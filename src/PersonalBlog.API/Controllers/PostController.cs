@@ -28,8 +28,8 @@ public class PostController : ControllerBase
     }
 
     [HttpGet]
-    [Route("getById")]
-    public async Task<ActionResult<FindPostResponseModel>> GetOneByIdAsync([FromBody] GetPostByIdRequestModel request)
+    [Route("getById/{id}")]
+    public async Task<ActionResult<FindPostResponseModel>> GetOneByIdAsync( GetPostByIdRequestModel request)
     {
         if (!ModelState.IsValid)
         {

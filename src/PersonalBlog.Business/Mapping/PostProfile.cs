@@ -1,5 +1,6 @@
 using AutoMapper;
 using PersonalBlog.Business.Models.Post.Add;
+using PersonalBlog.Business.Models.Post.Delete;
 using PersonalBlog.Business.Models.Post.Find;
 using PersonalBlog.DataAccess.Entities.Concrete;
 
@@ -11,6 +12,7 @@ public class PostProfile : Profile
     {
         CreateMap<Post, FindPostResponseModel>();
         CreateMap<Post, AddPostResponseModel>();
+        CreateMap<DeletePostRequestModel, Post>();
         CreateMap<AddPostRequestModel, Post>()
             .ForMember(c => c.Id, opt => 
                 opt.MapFrom(i => Guid.NewGuid()))

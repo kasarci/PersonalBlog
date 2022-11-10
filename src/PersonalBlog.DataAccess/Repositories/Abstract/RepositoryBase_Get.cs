@@ -10,8 +10,9 @@ public abstract partial class RepositoryBase<T> : IRepositoryGet<T> where T : IE
     {
         return RetryAsync(async () => 
         {
-            var result = await _collection.FindAsync(x => x.Id == id);
-            return result.Current.First();
+            var filter = _filterBuilder.Eq( t => t.Id, id);
+            var result = await _collection.FindAsync<T>(filter);
+            return await result.SingleOrDefaultAsync();
         });
     }
 }

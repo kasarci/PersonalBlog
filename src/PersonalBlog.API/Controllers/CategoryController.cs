@@ -28,16 +28,15 @@ public class CategoryController : ControllerBase
         return Ok(categories);
     }
 
-    [HttpGet]
-    [Route("getById")]
-    public async Task<ActionResult<CategoryModel>> GetCategoryById([FromBody] GetCategoryByIdRequestModel request)
+    [HttpGet("getById/{id}")]
+    public async Task<ActionResult<CategoryModel>> GetCategoryById(Guid id)
     {
         if(!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        var category = await _categoryService.FindAsync(c => c.IsActive && c.Id == request.Id);
+        var category = await _categoryService.FindAsync(c => c.IsActive && c.Id == id);
         if(category is null)
         {
             return NotFound();
@@ -45,16 +44,15 @@ public class CategoryController : ControllerBase
         return Ok(category);
     }
 
-    [HttpGet]
-    [Route("getByName")]
-    public async Task<ActionResult<CategoryModel>> GetCategoryByName([FromBody] GetCategoryByNameRequestModel request)
+    [HttpGet("getByName/{name}")]
+    public async Task<ActionResult<CategoryModel>> GetCategoryByName(string name)
     {
         if(!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        var category = await _categoryService.FindAsync(c => c.IsActive && c.Name == request.Name);
+        var category = await _categoryService.FindAsync(c => c.IsActive && c.Name == name);
 
         if(category is null)
         {

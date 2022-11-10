@@ -28,8 +28,7 @@ public class TagController : ControllerBase
         return Ok(tags);
     }
 
-    [HttpGet("{id}")]
-    [Route("getOneById")]
+    [HttpGet("getOneById/{id}")]
     public async Task<ActionResult<TagModel>> GetOneById(Guid id)
     {
         if(!ModelState.IsValid)
@@ -46,8 +45,7 @@ public class TagController : ControllerBase
         return Ok(tag);
     }
 
-    [HttpGet("{name}")]
-    [Route("getOneByName")]
+    [HttpGet("getOneByName/{name}")]
     public async Task<ActionResult<TagModel>> GetOneByName(string name)
     {
         if (String.IsNullOrEmpty(name))

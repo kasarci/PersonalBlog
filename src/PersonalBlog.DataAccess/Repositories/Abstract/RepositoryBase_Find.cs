@@ -22,8 +22,8 @@ public abstract partial class RepositoryBase<T> : IRepositoryFind<T> where T : I
     {
         return RetryAsync( async () =>
         {
-            var result = await _collection.FindAsync(filter);
-            return result.Current;
+            var result = await _collection.FindAsync(_filterBuilder.Where(filter));
+            return result.ToEnumerable();
         });
     }
 

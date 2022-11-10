@@ -9,6 +9,8 @@ using PersonalBlog.Business.Services.Abstract;
 using PersonalBlog.DataAccess.Entities.Concrete;
 using PersonalBlog.DataAccess.Repositories.Abstract.Interfaces;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace PersonalBlog.Business.Services.Concrete;
 
@@ -31,13 +33,19 @@ public class PostService : IPostService
     public async Task<AddPostResponseModel> AddAsync(AddPostRequestModel addPostRequestModel)
     {
         var post = _mapper.Map<Post>(addPostRequestModel);
-        await _repository.AddOneAsync(post);
-        return _mapper.Map<AddPostResponseModel>(post);
+        var postWithCategoriesAndTags = post with 
+        {
+            Categories = await GetCategories(addPostRequestModel.CategoryIds),
+            Tags = await GetTags(addPostRequestModel.TagIds)
+        };
+        
+        await _repository.AddOneAsync(postWithCategoriesAndTags);
+        return _mapper.Map<AddPostResponseModel>(postWithCategoriesAndTags);
     }
 
     public async Task<DeletePostResponseModel> DeleteAsync(DeletePostRequestModel deletePostRequestModel)
     {   
-        bool result = false;
+        bool result;
         if(deletePostRequestModel.DeleteCompletely)
         {
             var post = await _repository.GetAsync(deletePostRequestModel.PostId);
@@ -66,20 +74,40 @@ public class PostService : IPostService
     public async Task<UpdatePostResponseModel> UpdateAsync(UpdatePostRequestModel updatePostRequestModel)
     {
         var post = await _repository.GetAsync(updatePostRequestModel.Id);
-        if (post is null) return new UpdatePostResponseModel() { Succeed = false };
-       
-        List<Category> categories = new ();
-        List<Tag> tags = new ();
-        categories.AddRange((IEnumerable<Category>) updatePostRequestModel.CategoryIds.Select(async categoryId => await _categoryRepository.GetAsync(categoryId)));
-        tags.AddRange(collection: (IEnumerable<Tag>) updatePostRequestModel?.TagIds.Select(async tagId => await _tagRepository.GetAsync(tagId)));
+        if (post is null) return new UpdatePostResponseModel() { Succeed = false };        
+        
         var updatedPost = post with 
         {
             Title = updatePostRequestModel.Title,
             Content = updatePostRequestModel.Content,
-            Categories =  categories,
-            Tags = tags
+            Categories =  await GetCategories(updatePostRequestModel.CategoryIds),
+            Tags = await GetTags(updatePostRequestModel.TagIds)
         };
 
         return new UpdatePostResponseModel() { Succeed = await _repository.UpdateOneAsync(updatedPost) };
+    }
+
+    private async Task<List<Category>> GetCategories(List<Guid> categoryIds)
+    {
+        List<Category> categories = new ();
+        
+        foreach (var categoryId in categoryIds)
+        {
+            var category = await _categoryRepository.GetAsync(categoryId);
+            categories.Add(category);
+        }
+        
+        return categories;
+    }
+
+        private async Task<List<Tag>> GetTags(List<Guid>? tagIds)
+    {
+        List<Tag> tags = new ();
+        foreach (var tagId in tagIds)
+        {
+            var tag = await _tagRepository.GetAsync(tagId);
+            tags.Add(tag);
+        }
+        return tags;
     }
 }

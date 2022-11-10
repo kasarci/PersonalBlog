@@ -19,8 +19,8 @@ public class CommentController : ControllerBase
         _commentService = commentService;
     }
 
-    [HttpGet("{postId}")]
-    [Route("getAllByPostId")]
+    [HttpGet]
+    [Route("getAllByPostId/{id}")]
     public async Task<ActionResult<IEnumerable<CommentModel>>> GetAllByPostId(Guid postId)
     {
         if (!ModelState.IsValid)
@@ -37,9 +37,9 @@ public class CommentController : ControllerBase
         return Ok(comments);
     }
 
-    [HttpGet("{id}")]
-    [Route("getOneById")]
-    public async Task<ActionResult<CommentModel>> GetOneById(Guid id)
+    [HttpGet]
+    [Route("getOneById/{id}")]
+    public async Task<ActionResult<CommentModel>> GetOneById( Guid id)
     {
         if(!ModelState.IsValid)
         {
