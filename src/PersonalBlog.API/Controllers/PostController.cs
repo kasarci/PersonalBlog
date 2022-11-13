@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using PersonalBlog.Business.Models.Post.Add;
@@ -10,6 +11,7 @@ namespace PersonalBlog.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize("RequireAdminRole")]
 public class PostController : ControllerBase
 {
     private readonly IPostService _postService;
@@ -21,6 +23,7 @@ public class PostController : ControllerBase
 
     [HttpGet]
     [Route("getAll")]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<FindPostResponseModel>>> GetAllAsync()
     {
         var posts = await _postService.FindAsync(p => p.IsActive);
@@ -29,6 +32,7 @@ public class PostController : ControllerBase
 
     [HttpGet]
     [Route("getById/{id}")]
+    [AllowAnonymous]
     public async Task<ActionResult<FindPostResponseModel>> GetOneByIdAsync( GetPostByIdRequestModel request)
     {
         if (!ModelState.IsValid)

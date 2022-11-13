@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PersonalBlog.Business.Extensions;
@@ -11,6 +12,7 @@ namespace PersonalBlog.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[AllowAnonymous]
 public class AuthController : ControllerBase
 {
     private readonly UserManager<ApplicationUser> _userManager;

@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PersonalBlog.Business.Models.Category;
 using PersonalBlog.Business.Models.Category.Add;
@@ -11,6 +12,7 @@ namespace PersonalBlog.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize("RequireAdminRole")]
 public class CategoryController : ControllerBase
 {
     private readonly ICategoryService _categoryService;
@@ -22,6 +24,7 @@ public class CategoryController : ControllerBase
 
     [HttpGet]
     [Route("getAll")]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<CategoryModel>>> GetCategoriesAsync()
     {
         var categories = await _categoryService.FindAsync(c => c.IsActive);
@@ -29,6 +32,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet("getById/{id}")]
+    [AllowAnonymous]
     public async Task<ActionResult<CategoryModel>> GetCategoryById(Guid id)
     {
         if(!ModelState.IsValid)
@@ -45,6 +49,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet("getByName/{name}")]
+    [AllowAnonymous]
     public async Task<ActionResult<CategoryModel>> GetCategoryByName(string name)
     {
         if(!ModelState.IsValid)

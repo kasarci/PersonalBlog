@@ -10,6 +10,7 @@ namespace PersonalBlog.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize("RequireAdminRole")]
 public class UserController : ControllerBase
 {
     private readonly UserManager<ApplicationUser> _userManager;
@@ -25,6 +26,7 @@ public class UserController : ControllerBase
 
     [HttpPost]
     [Route("create")]
+    [AllowAnonymous]
     public async Task<ActionResult<CreateUserResponseModel>> Create(CreateUserRequestModel user)
     {
         if (ModelState.IsValid)
@@ -32,7 +34,7 @@ public class UserController : ControllerBase
             var appUser = _mapper.Map<ApplicationUser>(user);
 
             //Adding admin role to users for test purposes.
-            var role = await _roleManager.FindByIdAsync("Admin");
+            var role = await _roleManager.FindByNameAsync("Admin");
             appUser.AddRole(role.Id);
 
             var result = await _userManager.CreateAsync(appUser, user.Password);
@@ -52,7 +54,6 @@ public class UserController : ControllerBase
 
     [HttpPost]
     [Route("delete")]
-    [Authorize("RequireAdminRole")]
     public async Task<ActionResult> Delete(RemoveUserRequestModel user)
     {
         if (ModelState.IsValid)

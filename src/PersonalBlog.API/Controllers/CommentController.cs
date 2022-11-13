@@ -1,4 +1,5 @@
 using System.Reflection.Metadata.Ecma335;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PersonalBlog.Business.Models.Category.Add;
 using PersonalBlog.Business.Models.Comment;
@@ -10,6 +11,7 @@ namespace PersonalBlog.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[AllowAnonymous]
 public class CommentController : ControllerBase
 {
     private readonly ICommentService _commentService;
@@ -70,6 +72,7 @@ public class CommentController : ControllerBase
 
     [HttpDelete]
     [Route("delete")]
+    [Authorize("RequireAdminRole")]
     public async Task<ActionResult<DeleteCommentResponseModel>> DeleteAsync([FromBody] DeleteCommentRequestModel request)
     {
         if (!ModelState.IsValid)

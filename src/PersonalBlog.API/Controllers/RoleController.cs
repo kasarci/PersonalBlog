@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PersonalBlog.Business.Models.Role;
@@ -7,6 +8,7 @@ namespace PersonalBlog.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize("RequireAdminRole")]
 public class RoleController : ControllerBase
 {
     private readonly RoleManager<ApplicationRole> _roleManager;

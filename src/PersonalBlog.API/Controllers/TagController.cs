@@ -1,4 +1,5 @@
 using System.Diagnostics.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using PersonalBlog.Business.Models.Tag;
@@ -11,6 +12,7 @@ namespace PersonalBlog.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize("RequireAdminRole")]
 public class TagController : ControllerBase
 {
     private readonly ITagService _tagService;
@@ -22,6 +24,7 @@ public class TagController : ControllerBase
 
     [HttpGet]
     [Route("getAll")]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<TagModel>>> GetAllAsync()
     {
         var tags = await _tagService.FindAsync(t => t.IsActive);
@@ -29,6 +32,7 @@ public class TagController : ControllerBase
     }
 
     [HttpGet("getOneById/{id}")]
+    [AllowAnonymous]
     public async Task<ActionResult<TagModel>> GetOneById(Guid id)
     {
         if(!ModelState.IsValid)
@@ -46,6 +50,7 @@ public class TagController : ControllerBase
     }
 
     [HttpGet("getOneByName/{name}")]
+    [AllowAnonymous]
     public async Task<ActionResult<TagModel>> GetOneByName(string name)
     {
         if (String.IsNullOrEmpty(name))
