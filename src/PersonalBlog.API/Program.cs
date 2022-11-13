@@ -2,7 +2,6 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using PersonalBlog.API.Extensions;
-using PersonalBlog.API.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,15 +12,18 @@ BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
 BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(BsonType.String));
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => options.SuppressAsyncSuffixInActionNames = false);
+// For initializing the extension class.
+builder.Services.Init(builder.Configuration);
 builder.Services.AddFluentValidation();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddDependencyInjections(builder.Configuration);
-
+builder.Services.AddDependencyInjections();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddIdentityExtension();
+
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddSwaggerExtension();
+
+builder.Services.AddAuthenticationAndAuthorization();
 
 var app = builder.Build();
 
@@ -30,10 +32,12 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseHttpsRedirection();
 }
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

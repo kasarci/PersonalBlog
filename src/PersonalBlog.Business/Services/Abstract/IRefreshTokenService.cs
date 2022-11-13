@@ -6,4 +6,6 @@ public interface IRefreshTokenService
 {
     Task<RefreshToken> GetAsync(string id);
     Task DeleteByUserName(string? userName);
+    Task UpdateAsync(RefreshToken refreshToken);
+    Task CreateAsync(RefreshToken refreshToken);
 }
