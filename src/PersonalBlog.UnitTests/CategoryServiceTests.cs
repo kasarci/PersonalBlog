@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentAssertions;
-using FluentAssertions.Primitives;
 using Moq;
 using PersonalBlog.Business.Mapping;
 using PersonalBlog.Business.Models.Category;
@@ -17,7 +15,6 @@ using PersonalBlog.Business.Services.Concrete;
 using PersonalBlog.DataAccess.Entities.Concrete;
 using PersonalBlog.DataAccess.Repositories.Abstract.Interfaces;
 using Xunit;
-using Xunit.Sdk;
 
 namespace PersonalBlog.UnitTests;
 
