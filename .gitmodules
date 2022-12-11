@@ -1,0 +1,3 @@
+[submodule "src/PersonalBlog.UI/react-blog-UI"]
+	path = src/PersonalBlog.UI/react-blog-UI
+	url = https://github.com/kasarci/react-blog-UI.git
