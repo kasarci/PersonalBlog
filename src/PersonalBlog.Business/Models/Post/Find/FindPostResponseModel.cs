@@ -8,6 +8,7 @@ public class FindPostResponseModel
 {
     public Guid Id { get; set; }
     public Guid WriterId { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
     public string Title { get; init; }
     public string Content { get; init; }
     public List<CategoryModel> Categories { get; init; } = null!;
