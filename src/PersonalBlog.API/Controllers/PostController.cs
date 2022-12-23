@@ -33,14 +33,14 @@ public class PostController : ControllerBase
     [HttpGet]
     [Route("getById/{id}")]
     [AllowAnonymous]
-    public async Task<ActionResult<FindPostResponseModel>> GetOneByIdAsync( GetPostByIdRequestModel request)
+    public async Task<ActionResult<FindPostResponseModel>> GetOneByIdAsync( [FromRoute] Guid id)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        var post = await _postService.FindAsync(p => p.IsActive && p.Id == request.Id);
+        var post = await _postService.FindAsync(p => p.IsActive && p.Id == id);
         if(post is null)
         {
             return NotFound();
