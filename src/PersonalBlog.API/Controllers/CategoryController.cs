@@ -12,7 +12,7 @@ namespace PersonalBlog.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize("RequireAdminRole")]
+//[Authorize("RequireAdminRole")]
 public class CategoryController : ControllerBase
 {
     private readonly ICategoryService _categoryService;

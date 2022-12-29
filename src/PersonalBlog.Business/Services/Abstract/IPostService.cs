@@ -12,6 +12,7 @@ public interface IPostService
     Task<IEnumerable<FindPostResponseModel>> FindAsync(Expression<Func<Post, bool>> filter);
     Task<FindPostResponseModel> GetAsync(GetPostByIdRequestModel getPostByIdRequestModel);
     Task<AddPostResponseModel> AddAsync(AddPostRequestModel addPostRequestModel);
+    Task<Guid> AddCommentReference(AddCommentReferenceRequestModel id);
     Task<DeletePostResponseModel> DeleteAsync(DeletePostRequestModel deletePostRequestModel);
     Task<UpdatePostResponseModel> UpdateAsync(UpdatePostRequestModel updatePostRequestModel);
 }

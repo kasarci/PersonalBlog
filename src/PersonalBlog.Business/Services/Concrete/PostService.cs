@@ -1,3 +1,4 @@
+using System.Diagnostics.Tracing;
 using System.Linq.Expressions;
 using AutoMapper;
 using PersonalBlog.Business.Models.Category.Find;
@@ -20,14 +21,16 @@ public class PostService : IPostService
     private readonly IMapper _mapper;
     private readonly ICategoryRepository _categoryRepository;
     private readonly ITagRepository _tagRepository;
+    private readonly ICommentRepository _commentRepository;
 
 
-    public PostService(IPostRepository repository, IMapper mapper, ICategoryRepository categoryRepository, ITagRepository tagRepository)
+    public PostService(IPostRepository repository, IMapper mapper, ICategoryRepository categoryRepository, ITagRepository tagRepository, ICommentRepository commentRepository)
     {
         _repository = repository;
         _mapper = mapper;
         _categoryRepository = categoryRepository;
         _tagRepository = tagRepository;
+        _commentRepository = commentRepository;
     }
 
     public async Task<AddPostResponseModel> AddAsync(AddPostRequestModel addPostRequestModel)
@@ -41,6 +44,23 @@ public class PostService : IPostService
         
         await _repository.AddOneAsync(postWithCategoriesAndTags);
         return _mapper.Map<AddPostResponseModel>(postWithCategoriesAndTags);
+    }
+
+    public async Task<Guid> AddCommentReference(AddCommentReferenceRequestModel addCommentModel)
+    {
+        var post = await _repository.GetAsync(addCommentModel.PostId);
+        if (post is null) return Guid.Empty;
+        
+        var comment = await _commentRepository.GetAsync(addCommentModel.CommentId);
+        if (comment is null) return Guid.Empty;
+
+        var updatedPost = post.Comments.ToList<Comment>();
+        updatedPost.Add(comment);
+
+        var succeed = await _repository.UpdateOneAsync(post);
+        
+        if (succeed) return comment.Id;
+        else return Guid.Empty;
     }
 
     public async Task<DeletePostResponseModel> DeleteAsync(DeletePostRequestModel deletePostRequestModel)

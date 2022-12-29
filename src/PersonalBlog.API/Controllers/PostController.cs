@@ -11,7 +11,7 @@ namespace PersonalBlog.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize("RequireAdminRole")]
+//[Authorize("RequireAdminRole")]
 public class PostController : ControllerBase
 {
     private readonly IPostService _postService;

@@ -1,3 +1,4 @@
+using System.Resources;
 using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -5,6 +6,7 @@ using PersonalBlog.Business.Models.Category.Add;
 using PersonalBlog.Business.Models.Comment;
 using PersonalBlog.Business.Models.Comment.Add;
 using PersonalBlog.Business.Models.Comment.Delete;
+using PersonalBlog.Business.Models.Post.Add;
 using PersonalBlog.Business.Services.Abstract;
 
 namespace PersonalBlog.API.Controllers;
@@ -15,15 +17,17 @@ namespace PersonalBlog.API.Controllers;
 public class CommentController : ControllerBase
 {
     private readonly ICommentService _commentService;
+    private readonly IPostService _postService;
 
-    public CommentController(ICommentService commentService)
+    public CommentController(ICommentService commentService, IPostService postService)
     {
         _commentService = commentService;
+        _postService = postService;
     }
 
     [HttpGet]
-    [Route("getAllByPostId/{id}")]
-    public async Task<ActionResult<IEnumerable<CommentModel>>> GetAllByPostId(Guid postId)
+    [Route("getAllByPostId")]
+    public async Task<ActionResult<IEnumerable<CommentModel>>> GetAllByPostId([FromQuery]Guid postId)
     {
         if (!ModelState.IsValid)
         {
@@ -40,8 +44,8 @@ public class CommentController : ControllerBase
     }
 
     [HttpGet]
-    [Route("getOneById/{id}")]
-    public async Task<ActionResult<CommentModel>> GetOneById( Guid id)
+    [Route("getOneById")]
+    public async Task<ActionResult<CommentModel>> GetOneById([FromQuery] Guid id)
     {
         if(!ModelState.IsValid)
         {
@@ -66,6 +70,7 @@ public class CommentController : ControllerBase
         }
 
         var result = await _commentService.AddAsync(request);
+        var postResult = await _postService.AddCommentReference(new AddCommentReferenceRequestModel{CommentId = result.Id, PostId = request.PostId});
 
         return CreatedAtAction(nameof(GetOneById), new { id = result.Id }, result);
     }
