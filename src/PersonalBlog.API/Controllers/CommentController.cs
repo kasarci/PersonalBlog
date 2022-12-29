@@ -84,8 +84,13 @@ public class CommentController : ControllerBase
         {
             return BadRequest(ModelState);
         }
+        var comment = (await _commentService.FindAsync(c => c.Id == request.Id)).FirstOrDefault();
 
         var result = await _commentService.DeleteAsync(request);
+        if (result.Succeed)
+        {
+            await _postService.DeleteCommentReference(comment);
+        }
         
         return result.Succeed ? Ok(result) : NotFound(result);
     }

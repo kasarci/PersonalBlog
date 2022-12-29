@@ -12,6 +12,7 @@ using PersonalBlog.DataAccess.Repositories.Abstract.Interfaces;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Mvc.Razor;
+using PersonalBlog.Business.Models.Comment;
 
 namespace PersonalBlog.Business.Services.Concrete;
 
@@ -54,10 +55,18 @@ public class PostService : IPostService
         var comment = await _commentRepository.GetAsync(addCommentModel.CommentId);
         if (comment is null) return Guid.Empty;
 
-        var updatedPost = post.Comments.ToList<Comment>();
-        updatedPost.Add(comment);
+        var updatedComments = post.Comments is null ? 
+                                new List<Comment>() : 
+                                post.Comments?.ToList<Comment>();
 
-        var succeed = await _repository.UpdateOneAsync(post);
+        updatedComments.Add(comment);
+
+        var updatedPost = post with 
+        {
+            Comments = updatedComments
+        };
+
+        var succeed = await _repository.UpdateOneAsync(updatedPost);
         
         if (succeed) return comment.Id;
         else return Guid.Empty;
@@ -77,6 +86,21 @@ public class PostService : IPostService
         }
         
         return new DeletePostResponseModel() { Succeed = result }; 
+    }
+
+    public async Task<bool> DeleteCommentReference(CommentModel? comment)
+    {
+        var post = await _repository.GetAsync(comment.PostId);
+        if (post is null) return false;
+
+        var comments = new List<Comment>();
+        comments.AddRange(post.Comments.ToArray());
+
+        comments.Remove(comments.FirstOrDefault(c => c.Id == comment.Id));
+
+        var result = await _repository.UpdateOneAsync( post with {Comments = comments} );
+
+        return result;
     }
 
     public async Task<IEnumerable<FindPostResponseModel>> FindAsync(Expression<Func<Post, bool>> filter)

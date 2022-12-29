@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using PersonalBlog.Business.Models.Comment;
 using PersonalBlog.Business.Models.Post.Add;
 using PersonalBlog.Business.Models.Post.Delete;
 using PersonalBlog.Business.Models.Post.Find;
@@ -15,4 +16,5 @@ public interface IPostService
     Task<Guid> AddCommentReference(AddCommentReferenceRequestModel id);
     Task<DeletePostResponseModel> DeleteAsync(DeletePostRequestModel deletePostRequestModel);
     Task<UpdatePostResponseModel> UpdateAsync(UpdatePostRequestModel updatePostRequestModel);
+    Task<bool> DeleteCommentReference(CommentModel? comment);
 }
