@@ -22,7 +22,7 @@ public class AddCommentRequestModelValidator : AbstractValidator<AddCommentReque
             .NotEmpty()
             .EmailAddress();
 
-        RuleFor(acrm => acrm.Comment)
+        RuleFor(acrm => acrm.Content)
             .MinimumLength(CommentModelValidatorConfiguration.MinimumCommentLength)
             .WithMessage($"Comment should have minimum {CommentModelValidatorConfiguration.MinimumCommentLength} characters.")
             .MaximumLength(CommentModelValidatorConfiguration.MaximumCommentLength)
