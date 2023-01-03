@@ -57,7 +57,7 @@ public class CategoryController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var category = await _categoryService.FindAsync(c => c.IsActive && c.Name == name);
+        var category = await _categoryService.FindAsync(c => c.IsActive && c.Name.ToLower() == name.ToLower());
 
         if(category is null)
         {
