@@ -48,6 +48,25 @@ public class PostController : ControllerBase
         return Ok(post);
     }
 
+    [HttpGet]
+    [Route("getByCategory/{categoryName}")]
+    [AllowAnonymous]
+    public async Task<ActionResult<IEnumerable<FindPostResponseModel>>> GetOneByCategoryAsync([FromRoute] string categoryName)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var post = await _postService.FindAsync(p => p.IsActive && p.Categories.Any(c => c.Name.ToLower() == categoryName.ToLower()));
+        
+        if(post is null)
+        {
+            return NotFound();
+        }
+        return Ok(post);
+    }
+
     [HttpPost]
     [Route("add")]
     public async Task<ActionResult<AddPostResponseModel>> AddAsync(AddPostRequestModel request)
