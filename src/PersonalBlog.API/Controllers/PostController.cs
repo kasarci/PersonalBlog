@@ -1,6 +1,7 @@
+using System.Linq.Expressions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.TagHelpers;
+using PersonalBlog.API.Settings;
 using PersonalBlog.Business.Models.Post.Add;
 using PersonalBlog.Business.Models.Post.Delete;
 using PersonalBlog.Business.Models.Post.Find;
@@ -15,10 +16,38 @@ namespace PersonalBlog.API.Controllers;
 public class PostController : ControllerBase
 {
     private readonly IPostService _postService;
+    private static IConfiguration _configuration;
 
-    public PostController(IPostService postService)
+    public static BlogSettings BlogSettings 
+    { 
+        get 
+        {
+            if (_configuration is null)
+            {
+                throw new ArgumentNullException(nameof(_configuration), "Failed to load configuration in PostController.");
+            }
+            return _configuration.GetSection(nameof(BlogSettings)).Get<BlogSettings>();
+        }
+    } 
+
+    public PostController(IPostService postService, IConfiguration configuration)
     {
         _postService = postService;
+        _configuration = configuration;
+    }
+
+    [HttpGet]
+    [Route("getCount")]
+    [AllowAnonymous]
+    public async Task<ActionResult<CountAndPaginationSizeResponseModel>> GetCountAndPaginationSize() 
+    {
+        var responseModel = new CountAndPaginationSizeResponseModel 
+        {
+             Count = await _postService.CountAsync(),
+             PaginationSize = BlogSettings.PaginationSize
+        };
+
+        return Ok(responseModel);
     }
 
     [HttpGet]
@@ -27,6 +56,15 @@ public class PostController : ControllerBase
     public async Task<ActionResult<IEnumerable<FindPostResponseModel>>> GetAllAsync()
     {
         var posts = await _postService.FindAsync(p => p.IsActive);
+        return Ok(posts);
+    }
+
+    [HttpGet]
+    [Route("getAll/page/{pageIndex}")]
+    [AllowAnonymous]
+    public async Task<ActionResult<IEnumerable<FindPostResponseModel>>> GetAllWithPaginationAsync([FromRoute] int pageIndex)
+    {
+        var posts = await _postService.FindAsyncWithPagination(p=>p.IsActive, pageIndex, BlogSettings.PaginationSize);
         return Ok(posts);
     }
 

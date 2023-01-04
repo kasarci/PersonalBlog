@@ -34,6 +34,8 @@ public class PostService : IPostService
         _commentRepository = commentRepository;
     }
 
+    public async Task<long> CountAsync() => await _repository.CountAsync(p => p.IsActive);
+
     public async Task<AddPostResponseModel> AddAsync(AddPostRequestModel addPostRequestModel)
     {
         var post = _mapper.Map<Post>(addPostRequestModel);
@@ -106,6 +108,12 @@ public class PostService : IPostService
     public async Task<IEnumerable<FindPostResponseModel>> FindAsync(Expression<Func<Post, bool>> filter)
     {
         var posts = ( await _repository.FindAsync(filter)).Where(p => p.IsActive);
+        return _mapper.Map<IEnumerable<FindPostResponseModel>>(posts);
+    }
+
+    public async Task<IEnumerable<FindPostResponseModel>> FindAsyncWithPagination(Expression<Func<Post, bool>> filter, int pageIndex, int size)
+    {
+        var posts = (await _repository.FindAsyncWithPagination(filter, pageIndex, size)).Where(p => p.IsActive);
         return _mapper.Map<IEnumerable<FindPostResponseModel>>(posts);
     }
 

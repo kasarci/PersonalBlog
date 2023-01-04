@@ -31,13 +31,13 @@ public abstract partial class RepositoryBase<T> : IRepositoryFind<T> where T : I
     {
         return RetryAsync(async () => 
         {
-            var result = await _collection.FindAsync(filter, new FindOptions<T,T>()
+            var result = await _collection.FindAsync(_filterBuilder.Where(filter), new FindOptions<T,T>()
             {
-                Skip = pageIndex * size,
+                Skip = (pageIndex - 1) * size,
                 Limit = size,
-                Sort = _sortDefinition.Descending(x => x.Id)
+                Sort = _sortDefinition.Descending(x => x.CreatedAt)
             });
-            return result.Current;
+            return result.ToEnumerable();
         });
     }
 
@@ -52,7 +52,7 @@ public abstract partial class RepositoryBase<T> : IRepositoryFind<T> where T : I
         {
             var result = await _collection.FindAsync(filter, new FindOptions<T,T>()
             {
-                Skip = pageIndex * size,
+                Skip = (pageIndex - 1) * size,
                 Limit = size,
                 Sort = isDescending ? _sortDefinition.Descending(order) : _sortDefinition.Ascending(order)
             });

@@ -9,7 +9,9 @@
 - ~~Load categories in the home page. Limit 3.~~ 02.01.2023 3.20PM
 - ~~When clicking the category name, show all the post of the selected category.~~ 03.01.2023 2.10PM
 - ~~Fix the size problem on the recent blogs.~~ 03.01.2023 5.10PM
-- Add pagination to the Blogs page.
+- ~~Add pagination to the Blogs page.~~ 04.01.2023 3.21PM
+- Add pagination to the selected category posts page.
+- Recent post should be the reverse.
 - Add link to the Read more button in the recent blog cards.
 - Buttons in hamburger menu does not have link. Update them.
 - Make the footer section static.
