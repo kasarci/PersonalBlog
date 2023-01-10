@@ -19,4 +19,5 @@ public interface IPostService
     Task<UpdatePostResponseModel> UpdateAsync(UpdatePostRequestModel updatePostRequestModel);
     Task<bool> DeleteCommentReference(CommentModel? comment);
     Task<long> CountAsync();
+    Task<long> CountByCategoryNameAsync(string categoryName);
 }

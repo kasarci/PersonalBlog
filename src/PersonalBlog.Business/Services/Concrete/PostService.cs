@@ -35,6 +35,7 @@ public class PostService : IPostService
     }
 
     public async Task<long> CountAsync() => await _repository.CountAsync(p => p.IsActive);
+    public async Task<long> CountByCategoryNameAsync(string categoryName) => await _repository.CountAsync(p => p.IsActive && p.Categories.Any(c => c.Name.ToLower() == categoryName.ToLower()));
 
     public async Task<AddPostResponseModel> AddAsync(AddPostRequestModel addPostRequestModel)
     {

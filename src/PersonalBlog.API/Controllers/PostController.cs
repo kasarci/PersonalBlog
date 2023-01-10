@@ -51,6 +51,25 @@ public class PostController : ControllerBase
     }
 
     [HttpGet]
+    [Route("getCount/{categoryName}")]
+    [AllowAnonymous]
+    public async Task<ActionResult<CountAndPaginationSizeResponseModel>> GetCountAndPaginationSizeByCategoryName(string categoryName) 
+    {
+        if(string.IsNullOrEmpty(categoryName)) 
+        {
+            await GetCountAndPaginationSize();
+        }
+
+        var responseModel = new CountAndPaginationSizeResponseModel 
+        {
+             Count = await _postService.CountByCategoryNameAsync(categoryName),
+             PaginationSize = BlogSettings.PaginationSize
+        };
+
+        return Ok(responseModel);
+    }
+
+    [HttpGet]
     [Route("getAll")]
     [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<FindPostResponseModel>>> GetAllAsync()
@@ -60,7 +79,7 @@ public class PostController : ControllerBase
     }
 
     [HttpGet]
-    [Route("getAll/page/{pageIndex}")]
+[Route("getAll/page/{pageIndex}")]
     [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<FindPostResponseModel>>> GetAllWithPaginationAsync([FromRoute] int pageIndex)
     {
@@ -87,22 +106,22 @@ public class PostController : ControllerBase
     }
 
     [HttpGet]
-    [Route("getByCategory/{categoryName}")]
+    [Route("getByCategory/{categoryName}/page/{pageIndex}")]
     [AllowAnonymous]
-    public async Task<ActionResult<IEnumerable<FindPostResponseModel>>> GetOneByCategoryAsync([FromRoute] string categoryName)
+    public async Task<ActionResult<IEnumerable<FindPostResponseModel>>> GetAllByCategoryWithPaginationAsync([FromRoute] string categoryName, int pageIndex)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        var post = await _postService.FindAsync(p => p.IsActive && p.Categories.Any(c => c.Name.ToLower() == categoryName.ToLower()));
+        var posts = await _postService.FindAsyncWithPagination(p => p.IsActive && p.Categories.Any(c => c.Name.ToLower() == categoryName.ToLower()), pageIndex, BlogSettings.PaginationSize);
         
-        if(post is null)
+        if(posts is null)
         {
             return NotFound();
         }
-        return Ok(post);
+        return Ok(posts);
     }
 
     [HttpPost]
