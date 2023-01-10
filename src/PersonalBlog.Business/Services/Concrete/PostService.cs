@@ -106,9 +106,9 @@ public class PostService : IPostService
         return result;
     }
 
-    public async Task<IEnumerable<FindPostResponseModel>> FindAsync(Expression<Func<Post, bool>> filter)
+    public async Task<IEnumerable<FindPostResponseModel>> FindAsync(Expression<Func<Post, bool>> filter,int number, bool isDescending)
     {
-        var posts = ( await _repository.FindAsync(filter)).Where(p => p.IsActive);
+        var posts = ( await _repository.FindAsync(filter,number, isDescending)).Where(p => p.IsActive);
         return _mapper.Map<IEnumerable<FindPostResponseModel>>(posts);
     }
 

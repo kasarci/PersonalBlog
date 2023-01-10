@@ -19,10 +19,13 @@ public interface IRepositoryFind<T> where T : IEntity, new()
 
     /// <summary>
     /// Find documents with filter.
+    /// Default order is ascending.
     /// </summary>
     /// <param name="filter">Expression for filter</param>
+    /// <param name="number">Number of the element should return</param>
+    /// <param name="order">Expression for order</param>
     /// <returns>collection of <typeparamref name="T"/></returns>
-    Task<IEnumerable<T>> FindAsync(Expression<Func<T,bool>> filter);
+    Task<IEnumerable<T>> FindAsync(Expression<Func<T,bool>> filter, int number = 0,  bool isDescending = false);
 
     /// <summary>
     /// Find entities with paging.

@@ -15,7 +15,7 @@
     - ~~Update the post variable name to posts.~~
     - ~~Add pagination.~~
 - ~~Add pagination to the selected category posts page.~~ 10.01.2023 1.11 PM
-- Recent post should be the reverse.
+- ~~Recent post should be the reverse.~~ 10.01.2023 3.14 PM
 - Add link to the Read more button in the recent blog cards.
 - Buttons in hamburger menu does not have link. Update them.
 - Make the footer section static.

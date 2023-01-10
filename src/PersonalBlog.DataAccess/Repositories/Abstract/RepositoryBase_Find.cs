@@ -18,11 +18,17 @@ public abstract partial class RepositoryBase<T> : IRepositoryFind<T> where T : I
         });
     }
 
-    public Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> filter)
+    public Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> filter, int number = 0, bool isDescending = false)
     {
         return RetryAsync( async () =>
         {
-            var result = await _collection.FindAsync(_filterBuilder.Where(filter));
+            var result = await _collection.FindAsync(_filterBuilder.Where(filter), 
+                                                        new FindOptions<T, T>   {
+                                                                                    Limit = number != 0 ? number : null,
+                                                                                    Sort = isDescending ? 
+                                                                                            _sortDefinition.Descending(p => p.CreatedAt) :
+                                                                                            _sortDefinition.Ascending(p => p.CreatedAt)
+                                                                                });
             return result.ToEnumerable();
         });
     }

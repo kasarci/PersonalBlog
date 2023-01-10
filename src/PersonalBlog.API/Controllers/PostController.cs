@@ -79,11 +79,20 @@ public class PostController : ControllerBase
     }
 
     [HttpGet]
-[Route("getAll/page/{pageIndex}")]
+    [Route("getAll/page/{pageIndex}")]
     [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<FindPostResponseModel>>> GetAllWithPaginationAsync([FromRoute] int pageIndex)
     {
         var posts = await _postService.FindAsyncWithPagination(p=>p.IsActive, pageIndex, BlogSettings.PaginationSize);
+        return Ok(posts);
+    }
+
+    [HttpGet]
+    [Route("getRecents/{number}")]
+    [AllowAnonymous]
+    public async Task<ActionResult<IEnumerable<FindPostResponseModel>>> GetRecentPostsAsync([FromRoute] int number)
+    {
+        var posts = await _postService.FindAsync(p => p.IsActive, number, true);
         return Ok(posts);
     }
 

@@ -10,7 +10,7 @@ namespace PersonalBlog.Business.Services.Abstract;
 
 public interface IPostService
 {
-    Task<IEnumerable<FindPostResponseModel>> FindAsync(Expression<Func<Post, bool>> filter);
+    Task<IEnumerable<FindPostResponseModel>> FindAsync(Expression<Func<Post, bool>> filter, int number = 0, bool isDescending = false);
     Task<IEnumerable<FindPostResponseModel>> FindAsyncWithPagination(Expression<Func<Post, bool>> filter, int pageIndex, int size);
     Task<FindPostResponseModel> GetAsync(GetPostByIdRequestModel getPostByIdRequestModel);
     Task<AddPostResponseModel> AddAsync(AddPostRequestModel addPostRequestModel);
