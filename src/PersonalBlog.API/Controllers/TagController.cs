@@ -69,7 +69,6 @@ public class TagController : ControllerBase
 
     [HttpPost]
     [Route("add")]
-    [AllowAnonymous]
     public async Task<ActionResult<AddTagResponseModel>> AddAsync([FromBody] AddTagRequestModel request)
     {
         if(!ModelState.IsValid)

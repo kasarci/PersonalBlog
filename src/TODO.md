@@ -19,3 +19,6 @@
 - ~~Add link to the Read more button in the recent blog cards.~~ 11.01.2023 9.53 AM
 - ~~Buttons in hamburger menu does not have link. Update them.~~ 11.01.2023 9.53 AM
 - ~~Make the footer section static.~~ 11.01.2023 12.06 PM
+- ~~Update the authorizations in the API.~~ 11.01.2023 1.53PM
+- Create a login page and add login functionality.
+- Add admin page to the project.

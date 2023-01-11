@@ -10,7 +10,7 @@ namespace PersonalBlog.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-//[Authorize("RequireAdminRole")]
+[Authorize("RequireAdminRole")]
 public class UserController : ControllerBase
 {
     private readonly UserManager<ApplicationUser> _userManager;

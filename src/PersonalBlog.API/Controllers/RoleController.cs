@@ -8,7 +8,7 @@ namespace PersonalBlog.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-//[Authorize("RequireAdminRole")]
+[Authorize("RequireAdminRole")]
 public class RoleController : ControllerBase
 {
     private readonly RoleManager<ApplicationRole> _roleManager;

@@ -12,7 +12,7 @@ namespace PersonalBlog.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-//[Authorize("RequireAdminRole")]
+[Authorize("RequireAdminRole")]
 public class PostController : ControllerBase
 {
     private readonly IPostService _postService;
@@ -79,7 +79,7 @@ public class PostController : ControllerBase
     }
 
     [HttpGet]
-[Route("getAll/page/{pageIndex}")]
+    [Route("getAll/page/{pageIndex}")]
     [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<FindPostResponseModel>>> GetAllWithPaginationAsync([FromRoute] int pageIndex)
     {
