@@ -16,6 +16,6 @@
     - ~~Add pagination.~~
 - ~~Add pagination to the selected category posts page.~~ 10.01.2023 1.11 PM
 - ~~Recent post should be the reverse.~~ 10.01.2023 3.14 PM
-- Add link to the Read more button in the recent blog cards.
-- Buttons in hamburger menu does not have link. Update them.
-- Make the footer section static.
+- ~~Add link to the Read more button in the recent blog cards.~~ 11.01.2023 9.53 AM
+- ~~Buttons in hamburger menu does not have link. Update them.~~ 11.01.2023 9.53 AM
+- ~~Make the footer section static.~~ 11.01.2023 12.06 PM
