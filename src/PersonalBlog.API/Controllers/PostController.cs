@@ -135,7 +135,7 @@ public class PostController : ControllerBase
 
     [HttpPost]
     [Route("add")]
-    public async Task<ActionResult<AddPostResponseModel>> AddAsync(AddPostRequestModel request)
+    public async Task<ActionResult<AddPostResponseModel>> AddAsync( [FromBody] AddPostRequestModel request)
     {
         if(!ModelState.IsValid)
         {

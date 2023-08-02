@@ -26,9 +26,9 @@ public class RefreshTokenService : IRefreshTokenService
         await _repository.DeleteAsync(refreshToken);
     }
 
-    public async Task<RefreshToken> GetAsync(string id)
+    public async Task<RefreshToken> FindAsync(string id)
     {
-        return await _repository.GetAsync(Guid.Parse(id));
+        return (await _repository.FindAsync(x => x.Token == id)).FirstOrDefault();
     }
 
     public async Task UpdateAsync(RefreshToken refreshToken)

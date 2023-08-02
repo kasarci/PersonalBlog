@@ -56,11 +56,15 @@ public class AuthService : IAuthService
 
             if (expiryDate < DateTime.UtcNow)
             {
-                return new AuthResult().AddErrors("Expired token.");
+                Console.WriteLine("Access token is expired!");
+
+                // Mistake here. We should not return error from the method if the access token is expired.
+                // We need to check if the refresh token is valid first.
+                //return new AuthResult().AddErrors("Expired token.");
             }
 
             //Check if token stored in the database.
-            var storedToken = await _refreshTokenService.GetAsync(tokenRequest.RefreshToken);
+            var storedToken = await _refreshTokenService.FindAsync(tokenRequest.RefreshToken);
 
             if(storedToken is null)
             {
@@ -87,6 +91,7 @@ public class AuthService : IAuthService
 
             if (storedToken.ExpiryDate < DateTime.UtcNow)
             {
+                Console.WriteLine("Refrsh token is expired as well.");
                 return new AuthResult().AddErrors("Expired token.");
             }
 
@@ -98,8 +103,9 @@ public class AuthService : IAuthService
             return await GenerateAuthResult(dbUser);
 
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            Console.WriteLine(ex.Message);
             return new AuthResult().AddErrors("Server error.");
         }
     }

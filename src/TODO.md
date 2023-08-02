@@ -21,4 +21,5 @@
 - ~~Make the footer section static.~~ 11.01.2023 12.06 PM
 - ~~Update the authorizations in the API.~~ 11.01.2023 1.53PM
 - ~~Create a login page and add login functionality.~~ 12.01.2023 2.12 PM
-- Add admin page to the project.
+- ~~Add admin page to the project.~~
+    ~~- Add edit and delete actions to the post list in the ManagePost page.~~

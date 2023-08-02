@@ -4,7 +4,7 @@ namespace PersonalBlog.Business.Services.Abstract;
 
 public interface IRefreshTokenService 
 {
-    Task<RefreshToken> GetAsync(string id);
+    Task<RefreshToken> FindAsync(string id);
     Task DeleteByUserName(string? userName);
     Task UpdateAsync(RefreshToken refreshToken);
     Task CreateAsync(RefreshToken refreshToken);
