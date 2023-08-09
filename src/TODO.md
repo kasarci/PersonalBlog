@@ -23,3 +23,7 @@
 - ~~Create a login page and add login functionality.~~ 12.01.2023 2.12 PM
 - ~~Add admin page to the project.~~
     - ~~Add edit and delete actions to the post list in the ManagePost page.~~
+- ~~Add markdown preview feature to the blog pages.~~
+- ~~Add comment feature to the blog pages.~~
+- ~~Add linkedin and github links to the navbar.~~
+- ~~Delete Search bar. Not necessary atm.~~
